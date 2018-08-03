@@ -43,7 +43,6 @@ export default {
     createScriptTag() {
       const mfScript = document.createElement('script');
       mfScript.setAttribute('type', 'text/javascript');
-      mfScript.setAttribute('async', '');
       mfScript.setAttribute('defer', '');
       mfScript.setAttribute('src', 'http://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
 
@@ -53,8 +52,6 @@ export default {
     createStyleTag() {
       const mfStyle = document.createElement('link');
       mfStyle.setAttribute('rel', 'stylesheet');
-      mfStyle.setAttribute('async', '');
-      mfStyle.setAttribute('defer', '');
       mfStyle.setAttribute('href', 'http://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
 
       return mfStyle;
@@ -65,6 +62,7 @@ export default {
     if (typeof window === 'undefined') return;
 
     if (typeof window.mapfit === 'undefined') {
+
       const style = this.createStyleTag();
       const script = this.createScriptTag();
 
