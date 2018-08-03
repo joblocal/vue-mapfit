@@ -1,9 +1,21 @@
 {
   "name": "@joblocal/vue-mapfit",
   "version": "1.0.0",
+  "description": "This Project provides a SSR compatible vue component which provides a Maps View with Mapfit",
+  "directories": {
+    "doc": "docs"
+  },
   "main": "./dist/index.js",
   "license": "MIT",
   "author": "Joblocal GmbH",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joblocal/vue-mapfit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joblocal/vue-mapfit/issues"
+  },
+  "homepage": "https://github.com/joblocal/vue-mapfit#readme",
   "files": [
     "dist",
     "src"
@@ -15,9 +27,12 @@
     "SSR"
   ],
   "scripts": {
-    "start": "webpack-dev-server --open --hot",
+    "start:development": "webpack-dev-server --open --hot",
     "prebuild": "rm -rf dist",
     "prepublishOnly": "npm run build",
+    "test": "jest src",
+    "test:watch": "npm test -- --watch --onlyChanged",
+    "test:coverage": "npm test -- --coverage",
     "lint": "eslint . --ext js,vue --ignore-path .gitignore",
     "build": "webpack -p",
     "validate": "npm-run-all --parallel lint test"
@@ -26,8 +41,10 @@
     "vue": "^2.5.17"
   },
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.23",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.6",
+    "babel-jest": "^23.4.2",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
@@ -38,7 +55,9 @@
     "eslint-plugin-html": "^4.0.5",
     "eslint-plugin-import": "^2.13.0",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^23.4.2",
     "vue": "^2.5.17",
+    "vue-jest": "^2.6.0",
     "vue-loader": "^15.2.6",
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.16.3",
@@ -48,5 +67,31 @@
   "pre-push": {
     "run": "validate",
     "silent": true
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/",
+    "collectCoverageFrom": [
+      "src/**/*.{js,vue}",
+      "!src/**/*.(test|spec).js"
+    ],
+    "coverageThreshold": {
+        "global": {
+        "statements": 98,
+        "branches": 91,
+        "functions": 98,
+        "lines": 98
+      }
+    },
+    "moduleNameMapper": {
+      "^src/(.*/[A-Z].+)$": "<rootDir>/src/$1.vue"
+    },
+    "transform": {
+      "^.*\\.(vue)$": "<rootDir>/node_modules/vue-jest",
+      "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest"
+    }
+  },
+  "engines": {
+    "node": ">= 8.0.0"
   }
 }
