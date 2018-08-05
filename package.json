@@ -1,7 +1,7 @@
 {
   "name": "@joblocal/vue-mapfit",
   "version": "1.0.0",
-  "description": "This Project provides a SSR compatible vue component which provides a Maps View with Mapfit",
+  "description": "A SSR compatible vue component which provides a Maps View with Mapfit",
   "directories": {
     "doc": "docs"
   },
