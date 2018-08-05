@@ -47,7 +47,7 @@ describe('VueMapfit methods generate correct scripts', () => {
   });
 });
 
-describe('VueMapfit initialization', () => {
+describe('VueMapfit mounts correctly', () => {
   global.document.head.appendChild = jest.fn();
   global.document.body.appendChild = jest.fn();
 
