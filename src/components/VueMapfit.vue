@@ -62,7 +62,6 @@ export default {
     if (typeof window === 'undefined') return;
 
     if (typeof window.mapfit === 'undefined') {
-
       const style = this.createStyleTag();
       const script = this.createScriptTag();
 
