@@ -44,7 +44,7 @@ export default {
       const mfScript = document.createElement('script');
       mfScript.setAttribute('type', 'text/javascript');
       mfScript.setAttribute('defer', '');
-      mfScript.setAttribute('src', 'http://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
+      mfScript.setAttribute('src', 'https://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
 
       return mfScript;
     },
@@ -52,7 +52,7 @@ export default {
     createStyleTag() {
       const mfStyle = document.createElement('link');
       mfStyle.setAttribute('rel', 'stylesheet');
-      mfStyle.setAttribute('href', 'http://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
+      mfStyle.setAttribute('href', 'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
 
       return mfStyle;
     },

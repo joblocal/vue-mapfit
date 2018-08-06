@@ -36,14 +36,14 @@ describe('VueMapfit methods generate correct scripts', () => {
 
     expect(mfScript.type).toBe('text/javascript');
     expect(mfScript.defer).toBe(true);
-    expect(mfScript.src).toBe('http://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
+    expect(mfScript.src).toBe('https://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
   });
 
   test('creates correct script tag', () => {
     const mfStyle = wrapper.vm.createStyleTag(); // returns HTMLLinkElement
 
     expect(mfStyle.rel).toBe('stylesheet');
-    expect(mfStyle.href).toBe('http://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
+    expect(mfStyle.href).toBe('https://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
   });
 });
 
