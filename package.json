@@ -1,6 +1,6 @@
 {
   "name": "@joblocal/vue-mapfit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A SSR compatible vue component which provides a Maps View with Mapfit",
   "directories": {
     "doc": "docs"
@@ -76,7 +76,7 @@
       "!src/**/*.(test|spec).js"
     ],
     "coverageThreshold": {
-        "global": {
+      "global": {
         "statements": 98,
         "branches": 91,
         "functions": 98,
