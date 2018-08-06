@@ -81,10 +81,10 @@ $ yarn start:development
 * [Jest Api](https://facebook.github.io/jest/docs/en/api.html)
 
 ## Contributing
-Please read through our [contributing guidelines](https://github.com/joblocal/vue-bucket-loader/blob/master/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and feature requests.
+Please read through our [contributing guidelines](https://github.com/joblocal/vue-mapfit/blob/master/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and feature requests.
 
 
 ## Authors
 * **Joblocal GmbH** - *Initial work* - [Joblocal](https://github.com/joblocal)
 
-See also the list of [contributors](https://github.com/joblocal/vue-bucket-loader/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/joblocal/vue-mapfit/contributors) who participated in this project.
