@@ -62,12 +62,12 @@ describe('VueMapfit mounts correctly', () => {
   test('required scripts and styles are already available in browser', () => {
     const styleTag = document.createElement('link');
     styleTag.setAttribute('rel', 'stylesheet');
-    styleTag.setAttribute('href', 'http://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
+    styleTag.setAttribute('href', 'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
 
     const scriptTag = document.createElement('script');
     scriptTag.setAttribute('type', 'text/javascript');
     scriptTag.setAttribute('defer', '');
-    scriptTag.setAttribute('src', 'http://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
+    scriptTag.setAttribute('src', 'https://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
 
     expect(global.document.head.appendChild).toHaveBeenCalledWith(styleTag);
     expect(global.document.body.appendChild).toHaveBeenCalledWith(scriptTag);
