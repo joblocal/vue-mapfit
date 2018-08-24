@@ -3,7 +3,6 @@ import { shallowMount } from '@vue/test-utils';
 //  module under test
 import VueMapfit from 'src/components/VueMapfit';
 
-// jest.spyOn(global.document, '')
 let wrapper;
 
 const center = {
