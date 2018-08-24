@@ -16,6 +16,10 @@ export default {
       type: Number,
       default: 16,
     },
+    theme: {
+      type: String,
+      default: 'day',
+    },
   },
 
   methods: {
@@ -25,7 +29,7 @@ export default {
       if (this.apikey) mapfit.apikey = this.apikey;
 
       // draw map
-      const map = mapfit.MapView('vue-mapfit', { theme: 'day' });
+      const map = mapfit.MapView('vue-mapfit', { theme: this.theme });
 
       const position = mapfit.LatLng(this.center);
       const marker = mapfit.Marker(position);

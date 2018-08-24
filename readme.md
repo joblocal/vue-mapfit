@@ -46,6 +46,7 @@ After installing the package you can use it as followed.
 | apikey | false | String | Apikey is not required. Anyways it could be useful to generate one. You can generate them [here](https://mapfit.com). |
 | center | true | Object / Array | Provide an Center Point to your map |
 | zoom | false | Number | Provide a Zoom Value to zoom in your map |
+| theme | false | String | Provide a yaml file with the expected settings. Defaults to day theme. You can pass, "day," "night," "grayscale," or the location of them yaml file to use custom theme or different language |
 
 ### Development
 #### Installing dependencies

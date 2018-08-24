@@ -1,0 +1,7 @@
+#To use the night theme, replace, "mapfit-base-theme.yaml" wiith "mapfit-night.yaml"
+#To use the grayscale theme, replace, "mapfit-base-theme.yaml" wiith "mapfit-grayscale.yaml"
+
+import:
+    - https://cdn.mapfit.com/v2-4/themes/mapfit-base-theme.yaml
+global:
+    language: de
