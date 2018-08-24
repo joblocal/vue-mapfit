@@ -9,6 +9,7 @@
       <div class="card-body">
         <h2 class="card-title">Basic implementation</h2>
         <VueMapfit
+          :theme="theme"
           style="width: 100%; height: 500px;"
           :center="center"
         />
@@ -27,9 +28,10 @@ export default {
 
   data: () => ({
     center: {
-      lat: 47.8488075,
-      lng: 12.0768717,
+      lat: 48.137154,
+      lng: 11.576124,
     },
+    theme: '../../mapfit.yaml',
   }),
 };
 </script>
