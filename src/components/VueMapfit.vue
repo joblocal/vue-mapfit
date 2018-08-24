@@ -18,18 +18,18 @@ export default {
     },
     theme: {
       type: String,
+      default: 'day',
     },
   },
 
   methods: {
     initMapfit() {
       const { mapfit } = window;
-      const theme = this.theme != null ? this.theme : 'day';
 
       if (this.apikey) mapfit.apikey = this.apikey;
 
       // draw map
-      const map = mapfit.MapView('vue-mapfit', { theme });
+      const map = mapfit.MapView('vue-mapfit', { theme: this.theme });
 
       const position = mapfit.LatLng(this.center);
       const marker = mapfit.Marker(position);
