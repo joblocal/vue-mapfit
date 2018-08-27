@@ -47,6 +47,7 @@ After installing the package you can use it as followed.
 If you want more control over the mapfit,
 you can bind to @vueMapfit which exposes the marker and MapView isntances and allows you to use all mapfit methods.
 Also, please note that you can use all available Mapfit methods through window.mapfit. We expose the used marker and MapView methods that are used by the component for more control.
+
 ```Javascript
 <template>
   <VueMapfit
@@ -63,11 +64,11 @@ Also, please note that you can use all available Mapfit methods through window.m
       VueMapfit,
     },
     methods: {
-    getInstance(data) {
-      data.map.setZoom(8);
-      console.log(data.map.getScrollWheelEnabled());
+      getInstance(data) {
+        data.map.setZoom(8);
+        console.log(data.map.getScrollWheelEnabled());
+      },
     },
-  },
   };
 </script>
 ```
@@ -79,9 +80,7 @@ Also, please note that you can use all available Mapfit methods through window.m
 | apikey      | false    | String         | Apikey is not required. Anyways it could be useful to generate one. You can generate them [here](https://mapfit.com).                                                                         |
 | center      | true     | Object / Array | Provide an Center Point to your map                                                                                                                                                           |
 | theme       | false    | String         | Provide a yaml file with the expected settings. Defaults to day theme. You can pass, "day," "night," "grayscale," or the location of them yaml file to use custom theme or different language |
-| mapSettings | false    | Object         | Pass an object with any setMethod in the MapOptions methods.                                                                                                                                  |
-
-ex: :mapSetting="{ setZoom: 16, setScrollWheelEnabled: true }
+| mapSettings | false    | Object         | Pass an object with any setMethod in the MapOptions methods. ex: :mapSetting="{ setZoom: 16, setScrollWheelEnabled: true }
 
 ### Development
 
