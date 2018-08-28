@@ -64,7 +64,7 @@ Also, please note that you can use all available Mapfit methods through window.m
       VueMapfit,
     },
     methods: {
-      getInstance(data) {
+      getInstances(data) {
         data.map.setZoom(8);
         console.log(data.map.getScrollWheelEnabled());
       },
