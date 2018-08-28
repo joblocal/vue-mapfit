@@ -12,7 +12,7 @@
           :theme="theme"
           style="width: 100%; height: 500px;"
           :center="center"
-          @vueMapfit="getInstance($event)"
+          @vueMapfit="getInstances($event)"
           :mapSettings="{ setScrollWheelEnabled: true }"
         />
       </div>
@@ -29,7 +29,7 @@ export default {
   },
 
   methods: {
-    getInstance(data) {
+    getInstances(data) {
       data.map.setZoom(8);
     },
   },
