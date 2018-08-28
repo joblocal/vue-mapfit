@@ -3,6 +3,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     apikey: {
@@ -12,27 +13,47 @@ export default {
       type: [Array, Object],
       required: true,
     },
-    zoom: {
-      type: Number,
-      default: 16,
-    },
     theme: {
       type: String,
       default: 'day',
     },
+    mapSettings: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+
+  data: () => ({
+    mapfitObject: {
+      Marker: null,
+      MapView: null,
+    },
+  }),
+
+  computed: {
+    hasMapSettings() {
+      return Object.keys(this.mapSettings).length > 0;
+    },
   },
 
   methods: {
+    setMapSettings(map) {
+      Object.keys(this.mapSettings).map(setting => map[setting](this.mapSettings[setting]));
+    },
+
+    exposeInstances(instances) {
+      this.$emit('vueMapfit', instances);
+    },
+
     initMapfit() {
       const { mapfit } = window;
-
-      if (this.apikey) mapfit.apikey = this.apikey;
-
       // draw map
       const map = mapfit.MapView('vue-mapfit', { theme: this.theme });
 
       const position = mapfit.LatLng(this.center);
       const marker = mapfit.Marker(position);
+
+      if (this.apikey) mapfit.apikey = this.apikey;
 
       // set the map center on marker position
       map.setCenter(position);
@@ -40,8 +61,9 @@ export default {
       // add marker to map
       map.addMarker(marker);
 
-      // set map zoom
-      map.setZoom(this.zoom);
+      this.exposeInstances({ map, marker });
+
+      if (this.hasMapSettings) this.setMapSettings(map);
     },
 
     createScriptTag() {

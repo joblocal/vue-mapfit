@@ -12,6 +12,8 @@
           :theme="theme"
           style="width: 100%; height: 500px;"
           :center="center"
+          @vueMapfit="getInstances($event)"
+          :mapSettings="{ setScrollWheelEnabled: true }"
         />
       </div>
     </div>
@@ -24,6 +26,12 @@ import VueMapfit from '../../../src/components/VueMapfit';
 export default {
   components: {
     VueMapfit,
+  },
+
+  methods: {
+    getInstances(data) {
+      data.map.setZoom(8);
+    },
   },
 
   data: () => ({
