@@ -1,5 +1,5 @@
 <template>
-  <div id="vue-mapfit"></div>
+  <div :id="mapId"></div>
 </template>
 
 <script>
@@ -34,6 +34,14 @@ export default {
     hasMapSettings() {
       return Object.keys(this.mapSettings).length > 0;
     },
+
+    mapId() {
+      const uid = () => Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+
+      return ['map', uid(), uid(), uid(), uid()].join('-');
+    },
   },
 
   methods: {
@@ -48,7 +56,7 @@ export default {
     initMapfit() {
       const { mapfit } = window;
       // draw map
-      const map = mapfit.MapView('vue-mapfit', { theme: this.theme });
+      const map = mapfit.MapView(this.mapId, { theme: this.theme });
 
       const position = mapfit.LatLng(this.center);
       const marker = mapfit.Marker(position);

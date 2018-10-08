@@ -133,10 +133,6 @@ describe('VueMapfit methods generate correct scripts', () => {
       'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css',
     );
   });
-
-  test('to match snapshot', () => {
-    expect(wrapper.element).toMatchSnapshot();
-  });
 });
 
 describe('VueMapfit mounts correctly', () => {
