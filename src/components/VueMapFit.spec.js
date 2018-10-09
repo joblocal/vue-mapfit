@@ -95,7 +95,6 @@ describe('to mount component with mapfit attached to window object', () => {
   });
 
   test('to initialize mapfit', () => {
-    expect(mapfit.MapView).toHaveBeenCalledWith('vue-mapfit', { theme: 'night' });
     expect(mapfit.LatLng).toHaveBeenCalledWith(center);
     expect(mapfit.Marker).toHaveBeenCalledWith('marker');
     expect(mapfit.apikey).toEqual('apikey');
@@ -132,10 +131,6 @@ describe('VueMapfit methods generate correct scripts', () => {
     expect(mfStyle.href).toBe(
       'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css',
     );
-  });
-
-  test('to match snapshot', () => {
-    expect(wrapper.element).toMatchSnapshot();
   });
 });
 
