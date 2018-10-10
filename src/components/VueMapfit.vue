@@ -1,8 +1,9 @@
 <template>
-  <div id="vue-mapfit"></div>
+  <div :id="mapId"></div>
 </template>
 
 <script>
+
 export default {
   props: {
     apikey: {
@@ -12,23 +13,55 @@ export default {
       type: [Array, Object],
       required: true,
     },
-    zoom: {
-      type: Number,
-      default: 16,
+    theme: {
+      type: String,
+      default: 'day',
+    },
+    mapSettings: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+
+  data: () => ({
+    mapfitObject: {
+      Marker: null,
+      MapView: null,
+    },
+  }),
+
+  computed: {
+    hasMapSettings() {
+      return Object.keys(this.mapSettings).length > 0;
+    },
+
+    mapId() {
+      const uid = () => Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+
+      return ['map', uid(), uid(), uid(), uid()].join('-');
     },
   },
 
   methods: {
+    setMapSettings(map) {
+      Object.keys(this.mapSettings).map(setting => map[setting](this.mapSettings[setting]));
+    },
+
+    exposeInstances(instances) {
+      this.$emit('vueMapfit', instances);
+    },
+
     initMapfit() {
       const { mapfit } = window;
-
-      if (this.apikey) mapfit.apikey = this.apikey;
-
       // draw map
-      const map = mapfit.MapView('vue-mapfit', { theme: 'day' });
+      const map = mapfit.MapView(this.mapId, { theme: this.theme });
 
       const position = mapfit.LatLng(this.center);
       const marker = mapfit.Marker(position);
+
+      if (this.apikey) mapfit.apikey = this.apikey;
 
       // set the map center on marker position
       map.setCenter(position);
@@ -36,8 +69,9 @@ export default {
       // add marker to map
       map.addMarker(marker);
 
-      // set map zoom
-      map.setZoom(this.zoom);
+      this.exposeInstances({ map, marker });
+
+      if (this.hasMapSettings) this.setMapSettings(map);
     },
 
     createScriptTag() {

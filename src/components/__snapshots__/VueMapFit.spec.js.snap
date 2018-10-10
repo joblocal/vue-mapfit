@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`VueMapfit display matches snapshot using defaults 1`] = `
+exports[`VueMapfit methods generate correct scripts to match snapshot 1`] = `
 <div
   id="vue-mapfit"
 />
