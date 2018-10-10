@@ -24,6 +24,7 @@ export default {
   },
 
   data: () => ({
+    mapId: 'map',
     mapfitObject: {
       Marker: null,
       MapView: null,
@@ -33,14 +34,6 @@ export default {
   computed: {
     hasMapSettings() {
       return Object.keys(this.mapSettings).length > 0;
-    },
-
-    mapId() {
-      const uid = () => Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-
-      return ['map', uid(), uid(), uid(), uid()].join('-');
     },
   },
 
@@ -90,12 +83,22 @@ export default {
 
       return mfStyle;
     },
+
+    createMapId() {
+      const uid = () => Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+
+      return ['map', uid(), uid(), uid(), uid()].join('-');
+    },
   },
 
   mounted() {
     if (typeof window === 'undefined') return;
 
     if (typeof window.mapfit === 'undefined') {
+      this.mapId = this.createMapId();
+
       const style = this.createStyleTag();
       const script = this.createScriptTag();
 
