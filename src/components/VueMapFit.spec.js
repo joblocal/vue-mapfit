@@ -70,3 +70,37 @@ describe('mounted', () => {
     td.verify(map.addMarker(marker));
   });
 });
+
+describe('mounted for apiKey', () => {
+  const map = td.object(['addMarker', 'setZoom', 'setCenter']);
+  const mapfit = {
+    MapView: () => map,
+    LatLng: td.function(),
+    Marker: td.function(),
+  };
+
+  let wrapper;
+  beforeEach(() => {
+    mapfit.apikey = null;
+
+    const createTags = td.replace(utils, 'createTags');
+    td.when(createTags()).thenResolve(mapfit);
+  });
+
+  test('not to set the mapfit.apiKey when not provided', async () => {
+    wrapper = shallowMount(VueMapfit, { propsData });
+    await wrapper.vm.$nextTick();
+
+    expect(mapfit.apikey).toBe(null);
+  });
+
+  test('to set the mapfit.apiKey when provided', async () => {
+    const apikey = '123';
+    wrapper = shallowMount(VueMapfit, {
+      propsData: { ...propsData, apikey },
+    });
+    await wrapper.vm.$nextTick();
+
+    expect(mapfit.apikey).toBe(apikey);
+  });
+});
