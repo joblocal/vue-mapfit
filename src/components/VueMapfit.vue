@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { createTags } from '../utils';
 
 export default {
   props: {
@@ -31,57 +32,20 @@ export default {
     },
   }),
 
-  computed: {
-    hasMapSettings() {
-      return Object.keys(this.mapSettings).length > 0;
-    },
-  },
-
   methods: {
-    setMapSettings(map) {
-      Object.keys(this.mapSettings).map(setting => map[setting](this.mapSettings[setting]));
-    },
+    initMapfit(mapfit) {
+      if (this.apikey) mapfit.apikey = this.apikey;
 
-    exposeInstances(instances) {
-      this.$emit('vueMapfit', instances);
-    },
-
-    initMapfit() {
-      const { mapfit } = window;
-      // draw map
       const map = mapfit.MapView(this.mapId, { theme: this.theme });
+      Object.entries(this.mapSettings).forEach(([key, value]) => map[key](value));
 
       const position = mapfit.LatLng(this.center);
       const marker = mapfit.Marker(position);
 
-      if (this.apikey) mapfit.apikey = this.apikey;
-
-      // set the map center on marker position
       map.setCenter(position);
-
-      // add marker to map
       map.addMarker(marker);
 
-      this.exposeInstances({ map, marker });
-
-      if (this.hasMapSettings) this.setMapSettings(map);
-    },
-
-    createScriptTag() {
-      const mfScript = document.createElement('script');
-      mfScript.setAttribute('type', 'text/javascript');
-      mfScript.setAttribute('defer', '');
-      mfScript.setAttribute('src', 'https://cdn.mapfit.com/v2-4/assets/js/mapfit.js');
-
-      return mfScript;
-    },
-
-    createStyleTag() {
-      const mfStyle = document.createElement('link');
-      mfStyle.setAttribute('rel', 'stylesheet');
-      mfStyle.setAttribute('href', 'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
-
-      return mfStyle;
+      this.$emit('vueMapfit', { map, marker });
     },
 
     createMapId() {
@@ -96,19 +60,8 @@ export default {
   mounted() {
     if (typeof window === 'undefined') return;
 
-    if (typeof window.mapfit === 'undefined') {
-      this.mapId = this.createMapId();
-
-      const style = this.createStyleTag();
-      const script = this.createScriptTag();
-
-      script.addEventListener('load', () => this.initMapfit());
-
-      document.head.appendChild(style);
-      document.body.appendChild(script);
-    } else {
-      this.initMapfit();
-    }
+    this.mapId = this.createMapId();
+    createTags().then(mapfit => this.initMapfit(mapfit));
   },
 };
 </script>
