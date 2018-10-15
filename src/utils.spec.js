@@ -46,4 +46,12 @@ describe('createTags', () => {
     expect(link).toHaveProperty('rel', 'stylesheet');
     expect(link).toHaveProperty('href', 'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css');
   });
+
+  test('to not add tags more than once', () => {
+    createTags();
+    createTags();
+
+    expect(document.querySelectorAll('script').length).toEqual(1);
+    expect(document.querySelectorAll('link').length).toEqual(1);
+  });
 });
