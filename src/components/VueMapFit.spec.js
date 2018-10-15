@@ -21,7 +21,7 @@ afterEach(() => {
   td.reset();
 });
 
-describe('mounted', () => {
+describe('mounted for mapfit', () => {
   const map = td.object(['addMarker', 'setZoom', 'setCenter']);
   const mapfit = {
     MapView: td.function(),
@@ -70,3 +70,29 @@ describe('mounted', () => {
     td.verify(map.addMarker(marker));
   });
 });
+
+describe('mounted for mapid', () => {
+  const map = td.object(['addMarker', 'setZoom', 'setCenter']);
+  const mapfit = {
+    MapView: () => map,
+    LatLng: td.function(),
+    Marker: td.function(),
+  };
+
+  let wrapper;
+
+  beforeEach(() => {
+    const createTags = td.replace(utils, 'createTags');
+    td.when(createTags()).thenResolve(mapfit);
+  });
+
+  test('to set container id signature correctly', async () => {
+    wrapper = shallowMount(VueMapfit, { propsData });
+    await wrapper.vm.$nextTick();
+
+    const regex = /^map-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}$/i;
+    const valid = regex.test(wrapper.attributes().id);
+    expect(valid).toBeTruthy();
+  });
+})
+

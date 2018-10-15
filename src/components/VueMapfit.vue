@@ -5,6 +5,13 @@
 <script>
 import { createTags } from '../utils';
 
+function createMapId() {
+  const uid = () => Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+
+  return ['map', uid(), uid(), uid(), uid()].join('-');
+}
 export default {
   props: {
     apikey: {
@@ -47,20 +54,12 @@ export default {
 
       this.$emit('vueMapfit', { map, marker });
     },
-
-    createMapId() {
-      const uid = () => Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-
-      return ['map', uid(), uid(), uid(), uid()].join('-');
-    },
   },
 
   mounted() {
     if (typeof window === 'undefined') return;
 
-    this.mapId = this.createMapId();
+    this.mapId = createMapId();
     createTags().then(mapfit => this.initMapfit(mapfit));
   },
 };
