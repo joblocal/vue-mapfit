@@ -79,7 +79,7 @@ Also, please note that you can use all available Mapfit methods through window.m
 | ----------- | -------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | apikey      | false    | String         | Apikey is not required. Anyways it could be useful to generate one. You can generate them [here](https://mapfit.com).                                                                         |
 | center      | true     | Object / Array | Provide an Center Point to your map                                                                                                                                                           |
-| theme       | false    | String         | Provide a yaml file with the expected settings. Defaults to day theme. You can pass, "day," "night," "grayscale," or the location of the yaml file to use custom theme or different language |
+| theme       | false    | String         | Provide a yaml file with the expected settings. Defaults to day theme. You can pass, "day," "night," "grayscale," or the location of the yaml file to use custom theme or different language. Default: "day" |
 | mapSettings | false    | Object         | Pass an object with any setMethod in the MapOptions methods. ex: :mapSettings="{ setZoom: 16, setScrollWheelEnabled: true }
 
 ### Development
