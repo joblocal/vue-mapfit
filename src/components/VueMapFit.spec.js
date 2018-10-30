@@ -1,164 +1,132 @@
+import td from 'testdouble';
 import { shallowMount } from '@vue/test-utils';
 
-//  module under test
+import * as utils from '../utils';
+
+// module under test
 import VueMapfit from 'src/components/VueMapfit';
 
-jest.spyOn(global.document.head, 'appendChild');
-jest.spyOn(global.document.body, 'appendChild');
-
-let wrapper;
-
+const theme = 'day';
 const center = {
   lat: 47.850361,
   lng: 12.057812,
 };
 
-const propsData = { center };
-const setCenter = jest.fn();
-const setZoom = jest.fn();
-const addMarker = jest.fn();
-const mounted = jest.spyOn(VueMapfit, 'mounted');
-const initMapfit = jest.spyOn(VueMapfit.methods, 'initMapfit');
-const createStyleTag = jest.spyOn(VueMapfit.methods, 'createStyleTag');
-const createScriptTag = jest.spyOn(VueMapfit.methods, 'createScriptTag');
-const setMapSettings = jest.spyOn(VueMapfit.methods, 'setMapSettings');
-const hasMapSettings = jest.spyOn(VueMapfit.computed, 'hasMapSettings');
-const exposeInstances = jest.spyOn(VueMapfit.methods, 'exposeInstances');
-const mapfit = {
-  MapView: jest.fn(() => ({
-    addMarker,
-    setZoom,
-    setCenter,
-  })),
-  LatLng: jest.fn(() => 'marker'),
-  Marker: jest.fn(() => 'marker'),
+const propsData = {
+  center,
+  theme,
 };
 
-describe('to mount component without mapfit attached to window object', () => {
+afterEach(() => {
+  td.reset();
+});
+
+describe('mounted for mapfit', () => {
+  const map = td.object(['addMarker', 'setZoom', 'setCenter']);
+  const mapfit = {
+    MapView: td.function(),
+    LatLng: td.function(),
+    Marker: td.function(),
+  };
+
+  let wrapper;
   beforeEach(() => {
-    global.window.mapfit = undefined;
+    const createTags = td.replace(utils, 'createTags');
+    td.when(createTags()).thenResolve(mapfit);
+  });
+
+  test('to initialize a MapView', async () => {
+    const MapView = td.replace(mapfit, 'MapView');
+    td.when(MapView(td.matchers.isA(String), { theme })).thenReturn(map);
+
     wrapper = shallowMount(VueMapfit, { propsData });
+    await wrapper.vm.$nextTick();
+
+    td.verify(map.setCenter(td.matchers.anything()));
+    td.verify(map.addMarker(td.matchers.anything()));
   });
 
-  test('to call mounted hook', () => {
-    expect(mounted).toHaveBeenCalled();
+  test('to set the Mapfit center correctly', async () => {
+    td.when(mapfit.MapView(), { ignoreExtraArgs: true }).thenReturn(map);
+
+    const latLng = 'latlng';
+    td.when(mapfit.LatLng(center)).thenReturn(latLng);
+
+    wrapper = shallowMount(VueMapfit, { propsData });
+    await wrapper.vm.$nextTick();
+
+    td.verify(map.setCenter(latLng));
   });
 
-  test('to not have mapfit attached to the window object', () => {
-    expect(global.window.mapfit).toBeUndefined();
-  });
+  test('to set the Mapfit marker correctly', async () => {
+    td.when(mapfit.MapView(), { ignoreExtraArgs: true }).thenReturn(map);
 
-  test('to call createStyleTag method', () => {
-    expect(createStyleTag).toHaveBeenCalled();
-  });
+    const marker = 'the marker';
+    td.when(mapfit.Marker(td.matchers.anything())).thenReturn(marker);
 
-  test('to call createScriptTag method', () => {
-    expect(createScriptTag).toHaveBeenCalled();
-  });
+    wrapper = shallowMount(VueMapfit, { propsData });
+    await wrapper.vm.$nextTick();
 
-  test('to call appenChild method', () => {
-    expect(global.document.head.appendChild).toHaveBeenCalled();
-  });
-
-  test('to call body appenChild method', () => {
-    expect(global.document.body.appendChild).toHaveBeenCalled();
-  });
-
-  test('to call initMapfit', () => {
-    jest.spyOn(wrapper.vm, 'initMapfit');
-    global.window.mapfit = mapfit;
-    wrapper.vm.initMapfit();
-
-    expect(setMapSettings).not.toHaveBeenCalled();
-    expect(wrapper.vm.initMapfit).toHaveBeenCalled();
-    expect(mapfit.apikey).toBeUndefined();
+    td.verify(map.addMarker(marker));
   });
 });
 
-describe('to mount component with mapfit attached to window object', () => {
+describe('mounted for mapid', () => {
+  const map = td.object(['addMarker', 'setZoom', 'setCenter']);
+  const mapfit = {
+    MapView: () => map,
+    LatLng: td.function(),
+    Marker: td.function(),
+  };
+
+  let wrapper;
   beforeEach(() => {
-    global.window.mapfit = mapfit;
-    wrapper = shallowMount(VueMapfit, {
-      propsData: {
-        center,
-        apikey: 'apikey',
-        theme: 'night',
-        mapSettings: {
-          setZoom: 16,
-        },
-      },
-    });
+    mapfit.apikey = null;
+
+    const createTags = td.replace(utils, 'createTags');
+    td.when(createTags()).thenResolve(mapfit);
   });
 
-  test('to call initMapfit on mounted', () => {
-    expect(initMapfit).toHaveBeenCalled();
-  });
+  test('to set container id signature correctly', async () => {
+    wrapper = shallowMount(VueMapfit, { propsData });
+    await wrapper.vm.$nextTick();
 
-  test('to initialize mapfit', () => {
-    expect(mapfit.LatLng).toHaveBeenCalledWith(center);
-    expect(mapfit.Marker).toHaveBeenCalledWith('marker');
-    expect(mapfit.apikey).toEqual('apikey');
-    expect(setCenter).toHaveBeenCalledWith('marker');
-    expect(setZoom).toHaveBeenCalledWith(16);
-    expect(addMarker).toHaveBeenCalledWith('marker');
-    expect(hasMapSettings).toHaveBeenCalled();
-    expect(setMapSettings).toHaveBeenCalled();
-    expect(exposeInstances).toHaveBeenCalled();
+    const regex = /^map-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}$/i;
+    const valid = regex.test(wrapper.attributes().id);
+    expect(valid).toBeTruthy();
   });
-});
+})
 
-describe('VueMapfit methods generate correct scripts', () => {
+describe('mounted for apiKey', () => {
+  const map = td.object(['addMarker', 'setZoom', 'setCenter']);
+  const mapfit = {
+    MapView: () => map,
+    LatLng: td.function(),
+    Marker: td.function(),
+  };
+
+  let wrapper;
   beforeEach(() => {
+    mapfit.apikey = null;
+
+    const createTags = td.replace(utils, 'createTags');
+    td.when(createTags()).thenResolve(mapfit);
+  });
+
+  test('not to set the mapfit.apiKey when not provided', async () => {
+    wrapper = shallowMount(VueMapfit, { propsData });
+    await wrapper.vm.$nextTick();
+
+    expect(mapfit.apikey).toBe(null);
+  });
+
+  test('to set the mapfit.apiKey when provided', async () => {
+    const apikey = '123';
     wrapper = shallowMount(VueMapfit, {
-      propsData,
+      propsData: { ...propsData, apikey },
     });
-  });
+    await wrapper.vm.$nextTick();
 
-  test('creates correct script tag', () => {
-    const mfScript = wrapper.vm.createScriptTag(); // returns HTMLScriptElement
-
-    expect(mfScript.type).toBe('text/javascript');
-    expect(mfScript.defer).toBe(true);
-    expect(mfScript.src).toBe(
-      'https://cdn.mapfit.com/v2-4/assets/js/mapfit.js',
-    );
-  });
-
-  test('creates correct script tag', () => {
-    const mfStyle = wrapper.vm.createStyleTag(); // returns HTMLLinkElement
-
-    expect(mfStyle.rel).toBe('stylesheet');
-    expect(mfStyle.href).toBe(
-      'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css',
-    );
-  });
-});
-
-describe('VueMapfit mounts correctly', () => {
-  beforeEach(() => {
-    global.window.mapfit = undefined;
-    wrapper = shallowMount(VueMapfit, {
-      propsData,
-    });
-  });
-
-  test('required scripts and styles are already available in browser', () => {
-    const styleTag = document.createElement('link');
-    styleTag.setAttribute('rel', 'stylesheet');
-    styleTag.setAttribute(
-      'href',
-      'https://cdn.mapfit.com/v2-4/assets/css/mapfit.css',
-    );
-
-    const scriptTag = document.createElement('script');
-    scriptTag.setAttribute('type', 'text/javascript');
-    scriptTag.setAttribute('defer', '');
-    scriptTag.setAttribute(
-      'src',
-      'https://cdn.mapfit.com/v2-4/assets/js/mapfit.js',
-    );
-
-    expect(global.document.head.appendChild).toHaveBeenCalledWith(styleTag);
-    expect(global.document.body.appendChild).toHaveBeenCalledWith(scriptTag);
+    expect(mapfit.apikey).toBe(apikey);
   });
 });
