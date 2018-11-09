@@ -3,7 +3,9 @@
 </template>
 
 <script>
-import { createTags } from '../utils';
+import createTags from '../utils';
+
+console.warn('Deprecation warning: Unfortunately Mapfit decided to sunset their mapping platform until October 29, 2018. You will have to use another mapping vendor.');
 
 function createMapId() {
   const uid = () => Math.floor((1 + Math.random()) * 0x10000)
@@ -41,6 +43,7 @@ export default {
 
   methods: {
     initMapfit(mapfit) {
+      /* eslint no-param-reassign: ["error", { "props": false }] */
       if (this.apikey) mapfit.apikey = this.apikey;
 
       const map = mapfit.MapView(this.mapId, { theme: this.theme });
