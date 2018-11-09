@@ -11,7 +11,7 @@ const createNode = (tagName, options) => {
   return el;
 };
 
-export function createTags() {
+export default function createTags() {
   if (hasScript()) {
     return Promise.resolve(window.mapfit);
   }
